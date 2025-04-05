@@ -54,8 +54,9 @@ function handleImageError() {
     <div class="vertical-scroll-container">
         <section class="bg-gray-100 flex items-center justify-center rounded-lg min-h-[85svh] mx-10 my-5">
             <div class="max-w-[60%]">
-                <p class="text-center text-6xl font-bold text-gray-800 text-center leading-[90px] font-serif tracking-tight">
-                    L'assistente di intelligenza artificiale per assicuratori e  <span class="inverted-text">professionisti</span>
+                <p class="text-6xl font-bold text-gray-800 text-center leading-[90px] font-serif tracking-tight">
+                    L'assistente di intelligenza artificiale per assicuratori e
+                    <span class="inverted-text">professionisti</span>
                     in ambito assicurativo, legale e del l'energia.
                 </p>
                 <p class="text-center text-2xl font-base text-gray-800 mt-12">
@@ -66,15 +67,20 @@ function handleImageError() {
                     </div>
             </div>
         </section>
-        <section class="page">
-            <div class="border border-grey-2 rounded-full px-8 py-4 flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 29 24" class="h-6 w-6">
-                    <path fill="#22253B" d="M22.5 12a1.48 1.48 0 0 1-.984 1.406l-5.948 2.163-2.162 5.947a1.5 1.5 0 0 1-2.812 0l-2.162-5.948-5.948-2.162a1.5 1.5 0 0 1 0-2.812l5.948-2.162 2.162-5.948a1.5 1.5 0 0 1 2.812 0l2.163 5.948 5.947 2.162A1.48 1.48 0 0 1 22.5 12"></path><g clip-path="url(#AIcon_svg__a)"><path fill="#22253B" d="M28.375 6a.62.62 0 0 1-.41.586l-2.479.9-.9 2.479a.626.626 0 0 1-1.172 0l-.9-2.478-2.479-.901a.625.625 0 0 1 0-1.172l2.478-.9.9-2.48a.625.625 0 0 1 1.173.001l.9 2.478 2.479.9a.62.62 0 0 1 .41.587"></path></g><defs><clipPath id="AIcon_svg__a"><path fill="#fff" d="M19 1h10v10H19z"></path></clipPath></defs>
-                </svg>
+        <section class="pagetop">
+            <div class="max-w-[60%]">
+
+                <div class="border border-grey-2 rounded-full px-8 py-4 flex items-center gap-2 mx-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 29 24" class="h-6 w-6">
+                        <path fill="#22253B" d="M22.5 12a1.48 1.48 0 0 1-.984 1.406l-5.948 2.163-2.162 5.947a1.5 1.5 0 0 1-2.812 0l-2.162-5.948-5.948-2.162a1.5 1.5 0 0 1 0-2.812l5.948-2.162 2.162-5.948a1.5 1.5 0 0 1 2.812 0l2.163 5.948 5.947 2.162A1.48 1.48 0 0 1 22.5 12"></path><g clip-path="url(#AIcon_svg__a)"><path fill="#22253B" d="M28.375 6a.62.62 0 0 1-.41.586l-2.479.9-.9 2.479a.626.626 0 0 1-1.172 0l-.9-2.478-2.479-.901a.625.625 0 0 1 0-1.172l2.478-.9.9-2.48a.625.625 0 0 1 1.173.001l.9 2.478 2.479.9a.62.62 0 0 1 .41.587"></path></g><defs><clipPath id="AIcon_svg__a"><path fill="#fff" d="M19 1h10v10H19z"></path></clipPath></defs>
+                    </svg>
                     <h6 class="text-font-color-1 text-[0.75rem] leading-[1.5rem] font-[550] font-inter -tracking-[0.5px]">COME SI USA</h6>
                 </div>
-                    <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-        </section>
+            </div>
+            <div class="max-w-[60%]">
+                    <p class="text-6xl font-bold text-gray-800  font-serif tracking-tight">Esempi di <span class="inverted-text">attività</span> che assicur.ai può svolgere.</p>
+</div>
+                </section>
     </div>
 
 
@@ -126,7 +132,16 @@ function handleImageError() {
     border-bottom: 1px solid #ddd;
     padding: 20px;
 }
-
+.pagetop {
+    flex: 0 0 100vh; /* Each page takes full viewport height */
+    display: flex;
+    flex-direction: column;
+    justify-content: top;
+    align-items: center;
+    background-color: #f5f5f5;
+    border-bottom: 1px solid #ddd;
+    padding: 20px;
+}
 .page:nth-child(odd) {
     background-color: #e0e0e0;
 }
