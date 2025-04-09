@@ -1,7 +1,10 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Models\Chat;
+use App\Models\ChatItem;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -15,8 +18,25 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+    $chats=Chat::where('user_id', auth()->user()->id)->get();
+    return Inertia::render('Dashboard', [
+        'chats' => $chats,
+    ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+
+Route::get('/chats', function () {
+    $chats=Chat::where('user_id', Auth::user()->id)->get();
+    return Inertia::render('Chat', [
+        'chats' => $chats,
+    ]);
+})->middleware(['auth', 'verified'])->name('chat.items');
+
+Route::get('/chats/{chat_id}/messages', function ($chat_id) {
+    $chatItems=ChatItem::where('chat_id', $chat_id)->orderBy('created_at', 'asc')->get();
+    return response()->json($chatItems);
+})->middleware(['auth', 'verified'])->name('chat.items');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
