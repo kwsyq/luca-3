@@ -5,11 +5,11 @@
             <div v-if="selectedChat && messages" >
                 <div v-for="item in messages" :key="item.id"
                     :class="[
-                    'mb-2 rounded border p-2 w-3/5',
+                    'mb-2 rounded border p-2 w-3/5 ',
                     item.created_by === $page.props.auth.user.id ? 'ml-auto bg-blue-100 text-right' : 'mr-auto bg-gray-100 text-left',
                 ]">
                     <textarea
-                        class="w-full h-auto resize-none border-none bg-transparent focus:outline-none text-sm"
+                        class="w-full h-auto resize-none border-none bg-transparent focus:outline-none text-sm text-gray-900 max-h-[100px]"
                         :value="item.text"
                         readonly
                     ></textarea>

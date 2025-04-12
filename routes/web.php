@@ -33,6 +33,18 @@ Route::get('/chats', function () {
     ]);
 })->middleware(['auth', 'verified'])->name('chat.items');
 
+Route::post('/chats', function () {
+    $newchat=Chat::create([
+        'user_id' => Auth::user()->id,
+        'title' => 'Nuova chat',
+        'subtitle' => '',
+        'start_date' => now(),
+        'last_update' => now()
+        ]);
+    $chats=Chat::where('user_id', auth()->user()->id)->get();
+    return response()->json($newchat);
+})->middleware(['auth', 'verified'])->name('chat.add');
+
 Route::get('/chats/{chat_id}/messages', function ($chat_id) {
     $chatItems=ChatItem::where('chat_id', $chat_id)->orderBy('created_at', 'asc')->get();
     return response()->json($chatItems);

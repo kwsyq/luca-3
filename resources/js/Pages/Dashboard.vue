@@ -32,7 +32,7 @@
 
     <!-- Main content -->
     <main class="flex-1 p-4 w-[80%]">
-        div
+        <div class="w-32 cursor-pointer rounded-lg border border-gray-800 px-2 py-2 text-center text-sm font-semibold text-gray-700 hover:bg-blue-700 hover:text-gray-100" @click="addNewChat">Nuova chat</div>
         <div class="flex-1 overflow-y-auto">
                 <div class="mt-10 text-center text-gray-400">
                 <Messages :selectedChat="selectedChat"/>
@@ -48,6 +48,8 @@ import { Head, Link } from '@inertiajs/vue3';
 
 
 import { defineProps, ref, reactive } from 'vue';
+import axios from 'axios';
+
 import Messages from './Messages.vue';
 
 interface Chat {
@@ -82,6 +84,16 @@ const selectedChat = reactive<Chat>({
     title: '',
     subtitle: '',
 });
+
+const addNewChat = async () => {
+    const response = await axios.post(`/chats`);
+    
+    props.chats.push(response.data);
+
+    console.log(response);
+
+};
+
 
 const selectChat = async (chatId: number) => {
     console.log('Selected chat ID:', chatId);
