@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ChatGPTController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Chat;
 use App\Models\ChatItem;
@@ -36,6 +37,8 @@ Route::get('/chats/{chat_id}/messages', function ($chat_id) {
     $chatItems=ChatItem::where('chat_id', $chat_id)->orderBy('created_at', 'asc')->get();
     return response()->json($chatItems);
 })->middleware(['auth', 'verified'])->name('chat.items');
+
+Route::post('/chats/{chat_id}/messages', [ChatGPTController::class, 'getSimpleAnswer'])->middleware(['auth', 'verified'])->name('chat.items');
 
 
 Route::middleware('auth')->group(function () {

@@ -27,7 +27,17 @@ class ChatGPT extends Command
     {
 
 //        $filePath = storage_path('app/Unipol.pdf'); // or .txt, .docx, etc.
+        $apiKey = env('OPENAI_API_KEY');
+//        $filePath = storage_path('app/Unipol.pdf'); // or .txt, .docx, etc.
 
+        $client = new \GuzzleHttp\Client([
+            'base_uri' => 'https://api.openai.com/v1/',
+            'headers' => [
+                'Authorization' => 'Bearer ' . $apiKey,
+                'OpenAI-Beta' => 'assistants=v2',
+                'Content-Type' => 'application/json',
+            ],
+        ]); 
         $client = new \GuzzleHttp\Client([
             'base_uri' => 'https://api.openai.com/v1/',
             'headers' => [

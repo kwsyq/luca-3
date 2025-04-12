@@ -7,12 +7,6 @@
             <ApplicationLogo class="h-20" />
         </div>
 
-        <nav class="hidden space-x-4 md:flex">
-            <a href="#" class="text-gray-700 hover:text-gray-900">Funzionalità</a>
-            <a href="#" class="text-gray-700 hover:text-gray-900">Contattaci</a>
-            <a href="#" class="text-gray-700 hover:text-gray-900">Fonti</a>
-            <a href="#" class="text-gray-700 hover:text-gray-900">Prezzi</a>
-        </nav>
 
         <div class="flex items-center space-x-4">
             <Link href="/logout" class="w-56 cursor-pointer rounded-lg border border-gray-800 px-4 py-4 text-center font-semibold text-gray-700 hover:bg-blue-700 hover:text-gray-100">Esci</Link>
@@ -37,7 +31,8 @@
     </aside>
 
     <!-- Main content -->
-    <main class="flex-1 p-4">
+    <main class="flex-1 p-4 w-[80%]">
+        div
         <div class="flex-1 overflow-y-auto">
                 <div class="mt-10 text-center text-gray-400">
                 <Messages :selectedChat="selectedChat"/>
@@ -81,7 +76,7 @@ const sendMessage = () => {
         // either optimistically or after receiving a response from the server.
     }
 };
-const selectedChat = reactive < Chat | null > ({
+const selectedChat = reactive({
     id: null,
     date: null,
     title: null,
