@@ -92,8 +92,7 @@ interface Message {
     id: number;
     chat_id: number; // Assicurati che la tua tabella ChatItems abbia questa colonna
     text: string;
-    created_at: string; // O Date se vuoi convertirla
-    updated_at: string; // O Date se vuoi convertirla
+    created_by: number; // O Date se vuoi convertirla
 }
 
 interface User {
@@ -150,7 +149,7 @@ const sendMessage = async () => {
         const tempId = Math.random().toString(36).substring(2, 15);
         //debugger;
         const newMessageObject: Message = {
-            id: tempId,
+            id: 0,
             chat_id: props.selectedChat.id,
             text: newMessage.value,
             created_by: usePage().props.auth.user.id,
@@ -171,12 +170,10 @@ const sendMessage = async () => {
             } else {
                 console.error('Errore: Risposta del server inattesa durante l\'invio del messaggio.');
                 // Optionally revert the local addition or show an error
-                messages.value = messages.value.filter(msg => msg.tempId !== tempId);
             }
         } catch (error) {
             console.error('Errore nell\'invio del messaggio:', error);
             // Optionally revert the local addition or show an error
-            messages.value = messages.value.filter(msg => msg.tempId !== tempId);
         }
     }
 };

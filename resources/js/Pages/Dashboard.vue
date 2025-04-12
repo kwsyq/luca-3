@@ -76,11 +76,11 @@ const sendMessage = () => {
         // either optimistically or after receiving a response from the server.
     }
 };
-const selectedChat = reactive({
-    id: null,
-    date: null,
-    title: null,
-    subtitle: null,
+const selectedChat = reactive<Chat>({
+    id: 0,
+    date: '',
+    title: '',
+    subtitle: '',
 });
 
 const selectChat = async (chatId: number) => {
@@ -90,10 +90,10 @@ const selectChat = async (chatId: number) => {
     if (chat) {
         Object.assign(selectedChat, chat);
     } else {
-        selectedChat.title = null;
-        selectedChat.subtitle = null;
-        selectedChat.date = null;
-        selectedChat.id = null;
+        selectedChat.title = '';
+        selectedChat.subtitle = '';
+        selectedChat.date = '';
+        selectedChat.id = 0;
     }
 
     console.log('Selected chat title:', selectedChat.title);
