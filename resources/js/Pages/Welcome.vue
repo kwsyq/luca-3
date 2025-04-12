@@ -34,8 +34,8 @@ function handleImageError() {
             </nav>
 
             <div class="flex items-center space-x-4">
-                <Link href="/login" class="text-center border border-gray-800 hover:bg-blue-700 hover:text-orange-100 cursor-pointer text-gray-700 font-semibold py-4 px-4 rounded-lg w-56">Accedi</Link>
-                <Link href="/register" class="text-center bg-blue-700 hover:bg-gray-300 text-gray-100 hover:text-gray-800 font-semibold py-4 px-4 rounded-lg w-56">Attiva la Prova Gratuita</Link>
+                <a href="/login" class="text-center border border-gray-800 hover:bg-blue-700 hover:text-orange-100 cursor-pointer text-gray-700 font-semibold py-4 px-4 rounded-lg w-56">Accedi</a>
+                <a href="/register" class="text-center bg-blue-700 hover:bg-gray-300 text-gray-100 hover:text-gray-800 font-semibold py-4 px-4 rounded-lg w-56">Attiva la Prova Gratuita</a>
             </div>
 
             <div class="md:hidden">
