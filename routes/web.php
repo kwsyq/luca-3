@@ -59,4 +59,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+
+Route::get('/test-route', function () {
+    return 'This is a test route from Monza!'; // Added location for context
+});
 require __DIR__.'/auth.php';

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ChatItem;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
+use Illuminate\Log\Logger;
 use OpenAI;
 
 class ChatGPTController extends Controller
@@ -23,7 +24,8 @@ class ChatGPTController extends Controller
         ]);
 
         $apiKey = env('OPENAI_API_KEY');
-
+        
+logger($apiKey);
 
         // Send the user's message to OpenAI and get the response
         try {
