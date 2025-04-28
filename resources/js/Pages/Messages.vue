@@ -47,54 +47,55 @@
 </div>
     </div>
   </template>
-  
+
   <script setup lang="ts">
   import { defineProps, ref, onMounted, watch } from 'vue';
   import axios from 'axios';
   import { usePage } from '@inertiajs/vue3';
-  
+
   interface Chat {
     id: number;
     date: string;
     title: string;
     subtitle: string;
   }
-  
+
   interface Message {
     id: number;
     chat_id: number;
     text: string;
     created_by: number;
   }
-  
+
   interface User {
     id: number;
     [key: string]: any;
   }
-  
+
   const messages = ref<Message[]>([]);
   const loadingMessages = ref(false);
-  
+
   let props = defineProps<{
     selectedChat: Chat | null;
     isNewChat: number;
   }>();
-  
+
+  let newChat: number = props.isNewChat;
   const newMessage = ref('');
-  
+
   const prompts = ref([
     'Carico una preventivo di una polizza, puoi scrivermi l\'email per il cliente?',
     'Carico una polizza, puoi estrarre tutte le informazioni chiave?',
     'Puoi riscrivere questa email in modo più chiaro e professionale?',
     'Carico un documento, puoi farmi un riassunto chiaro e dettagliato?',
   ]);
-  
+
   const fetchMessages = async (chatId: number) => {
     if (!chatId) {
       messages.value = [];
       return;
     }
-  
+
     loadingMessages.value = true;
     try {
       const response = await axios.get(`/chats/${chatId}/messages`);
@@ -105,7 +106,7 @@
       loadingMessages.value = false;
     }
   };
-  
+
   onMounted(() => {
     if (props.selectedChat?.id) {
       fetchMessages(props.selectedChat.id);
@@ -125,7 +126,7 @@
       messages.value = [];
     }
   });
-  
+
   const sendMessage = async () => {
     if (props.selectedChat && newMessage.value.trim() !== '') {
       const newMessageObject: Message = {
@@ -144,7 +145,7 @@
         if (Array.isArray(response.data) && response.data.length >= 1) {
           messages.value.push(response.data[0]);
           messages.value.push(response.data[1]);
-          props.isNewChat = 0;
+          newChat = 0;
         } else {
           console.error('Errore: Risposta del server inattesa durante l\'invio del messaggio.');
         }
@@ -153,12 +154,12 @@
       }
     }
   };
-  
+
   const fillTextArea = (prompt: string) => {
     newMessage.value = prompt;
   };
   </script>
-  
+
   <style scoped>
   .box {
     padding: 5px 5px;
@@ -177,11 +178,11 @@
     align-items: center;  /* Vertical centering */
     justify-content: center; /* Horizontal centering (again, for Flexbox) */
   }
-  
+
   .box:hover {
     background-color: #d3e0e9;
   }
-  
+
   .container {
     width: 100%;
     height: 100%;
@@ -191,7 +192,7 @@
     background-color: white;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   }
-  
+
   .info-zone {
     height: 80%;
     overflow-y: auto;
@@ -200,7 +201,7 @@
     display: flex;
     flex-direction: column-reverse;
   }
-  
+
   .input-zone {
     height: 20%;
     padding: 10px;
