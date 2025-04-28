@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Chat;
 use App\Models\ChatItem;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
@@ -17,6 +18,14 @@ class ChatGPTController extends Controller
         $user_id = $request->input('user_id');
         $chat_id = $request->input('chat_id');
 
+        $chat=Chat::find($chat_id);
+
+        if($chat->chatItems()->count()==0){
+            $chat->update([
+                'title' => substr($text, 0, 50),
+            ]);
+        }
+
         $chatItem = ChatItem::create([
             'chat_id' => $chat_id,
             'text' => $text,
@@ -24,7 +33,7 @@ class ChatGPTController extends Controller
         ]);
 
         $apiKey = env('OPENAI_API_KEY');
-        
+
 logger($apiKey);
 
         // Send the user's message to OpenAI and get the response
@@ -37,13 +46,17 @@ logger($apiKey);
                     'Content-Type' => 'application/json',
                 ],
             ]);
+            $instructions = "You are a helpful assistant specialized in providing information about insurance policies. Respond in Italian.";
+
+            $messages = [
+                ['role' => 'system', 'content' => $instructions],
+                ['role' => 'user', 'content' => $request->input('text')],
+            ];
 
             $response = $client->post('chat/completions', [
                 'json' => [
-                    'model' => 'gpt-4o', // Or your preferred model
-                    'messages' => [
-                        ['role' => 'user', 'content' => $request->input('text')],
-                    ],
+                    'model' => 'gpt-4.1', // Or your preferred model
+                    'messages' => $messages,
                 ],
             ]);
 

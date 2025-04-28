@@ -10,14 +10,14 @@
 
         <div class="flex items-center space-x-4">
             <Link href="/logout" class="w-56 cursor-pointer rounded-lg border border-gray-800 px-4 py-4 text-center font-semibold text-gray-700 hover:bg-blue-700 hover:text-gray-100">Esci</Link>
-            <Link href="/register" class="w-56 rounded-lg bg-blue-700 px-4 py-4 text-center font-semibold text-gray-100 hover:bg-gray-300 hover:text-gray-800">Attiva la Prova Gratuita</Link>
         </div>
     </div>
 </header>
 <div class="flex h-full flex-col lg:flex-row">
     <!-- Sidebar (desktop only) -->
     <aside class="hidden w-[20%] overflow-y-auto border-r lg:block">
-        <div v-for="chat in chats" :key="chat.id" class="border-b p-4" @click="selectChat(chat.id)">
+        <div v-for="chat in chats" :key="chat.id" class="border-b p-4" @click="selectChat(chat.id)"  
+            :class="{ 'bg-gray-200': selectedChatId === chat.id }">
             <div class="cursor-pointer text-xs text-gray-500">
                 {{ (chat as any).date }}
             </div>
@@ -32,10 +32,11 @@
 
     <!-- Main content -->
     <main class="flex-1 p-4 w-[80%]">
+
         <div class="w-32 cursor-pointer rounded-lg border border-gray-800 px-2 py-2 text-center text-sm font-semibold text-gray-700 hover:bg-blue-700 hover:text-gray-100" @click="addNewChat">Nuova chat</div>
         <div class="flex-1 overflow-y-auto">
                 <div class="mt-10 text-center text-gray-400">
-                <Messages :selectedChat="selectedChat"/>
+                <Messages :selectedChat="selectedChat" :isNewChat="isNewChat"/>
             </div>
         </div>
     </main>
@@ -63,6 +64,7 @@ const props = defineProps<{
   chats: Chat[];
 }>();
 
+const isNewChat = ref(0);
 const chatItems = ref([]);
 const loading = ref(false);
 let newMessage = ref('');
@@ -88,12 +90,15 @@ const selectedChat = reactive<Chat>({
 const addNewChat = async () => {
     const response = await axios.post(`/chats`);
     
-    props.chats.push(response.data);
+    const localChat=response.data;
+    props.chats.push(localChat);
 
+    Object.assign(selectedChat, localChat);
+    selectedChatId.value = localChat.id;
+    isNewChat.value=1;
     console.log(response);
-
 };
-
+const selectedChatId = ref<number | null>(null);
 
 const selectChat = async (chatId: number) => {
     console.log('Selected chat ID:', chatId);
@@ -101,6 +106,8 @@ const selectChat = async (chatId: number) => {
 
     if (chat) {
         Object.assign(selectedChat, chat);
+        selectedChatId.value = chat.id;
+        isNewChat.value = 0;
     } else {
         selectedChat.title = '';
         selectedChat.subtitle = '';
@@ -111,3 +118,6 @@ const selectChat = async (chatId: number) => {
     console.log('Selected chat title:', selectedChat.title);
 };
 </script>
+<style lang="css" scoped>
+
+</style>

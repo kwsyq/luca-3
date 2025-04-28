@@ -11,4 +11,9 @@ class Chat extends Model
 
     protected $guarded = [];
 
+    public function chatItems() 
+    {
+        return $this->hasMany(ChatItem::class);
+    }
+
 }
