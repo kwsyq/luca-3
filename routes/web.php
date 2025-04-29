@@ -51,7 +51,7 @@ Route::get('/chats/{chat_id}/messages', function ($chat_id) {
 })->middleware(['auth', 'verified'])->name('chat.items');
 
 Route::post('/chats/{chat_id}/messages', [ChatGPTController::class, 'getSimpleAnswer'])->middleware(['auth', 'verified'])->name('chat.items');
-
+Route::post('/chats/{chat_id}/upload-and-process', [ChatGPTController::class, 'uploadAndProcess'])->middleware(['auth', 'verified'])->name('chat.file.upload');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

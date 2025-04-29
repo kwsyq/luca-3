@@ -35,6 +35,15 @@
     class="flex-1 rounded border text-gray-900 p-2 focus:border-blue-300 focus:outline-none focus:ring input-textarea"
     placeholder="Write a new message..."
   ></textarea>
+
+    <!-- New: File Upload -->
+<input
+    type="file"
+    @change="handleFileUpload"
+    ref="fileInput"
+    class="ml-2"
+  />
+
   <button
     class="send-button"
     @click="sendMessage"
@@ -127,34 +136,67 @@
     }
   });
 
-  const sendMessage = async () => {
-    if (props.selectedChat && newMessage.value.trim() !== '') {
-      const newMessageObject: Message = {
-        id: 0,
+  const fileToUpload = ref<File | null>(null); // <- NEW
+
+const fileInput = ref<HTMLInputElement | null>(null); // <- NEW
+
+const handleFileUpload = (event: Event) => {
+  const target = event.target as HTMLInputElement;
+  if (target.files && target.files.length > 0) {
+    fileToUpload.value = target.files[0];
+  }
+};
+
+const sendMessage = async () => {
+  if (!props.selectedChat) return;
+
+  if (!newMessage.value.trim() && !fileToUpload.value) {
+    alert('Devi scrivere un messaggio o caricare un file.');
+    return;
+  }
+
+  try {
+    let response;
+
+    if (fileToUpload.value) {
+      // Send FILE + TEXT to API
+      const formData = new FormData();
+      formData.append('file', fileToUpload.value);
+      formData.append('text', newMessage.value);
+      formData.append('chat_id', props.selectedChat.id.toString());
+      formData.append('user_id', usePage().props.auth.user.id.toString());
+
+      response = await axios.post(`/chats/${props.selectedChat.id}/upload-and-process`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+    } else {
+      // No file: normal text message
+      response = await axios.post(`/chats/${props.selectedChat.id}/messages`, {
+        user_id: usePage().props.auth.user.id,
         chat_id: props.selectedChat.id,
         text: newMessage.value,
-        created_by: usePage().props.auth.user.id,
-      };
-      newMessage.value = '';
-      try {
-        const response = await axios.post(`/chats/${props.selectedChat.id}/messages`, {
-          user_id: usePage().props.auth.user.id,
-          chat_id: props.selectedChat.id,
-          text: newMessageObject.text,
-        });
-        if (Array.isArray(response.data) && response.data.length >= 1) {
-          messages.value.push(response.data[0]);
-          messages.value.push(response.data[1]);
-          newChat = 0;
-        } else {
-          console.error('Errore: Risposta del server inattesa durante l\'invio del messaggio.');
-        }
-      } catch (error) {
-        console.error('Errore nell\'invio del messaggio:', error);
-      }
+      });
     }
-  };
 
+    if (Array.isArray(response.data) && response.data.length >= 1) {
+      messages.value.push(response.data[0]);
+      messages.value.push(response.data[1]);
+      newChat = 0;
+    } else {
+      console.error('Errore: Risposta del server inattesa durante l\'invio del messaggio.');
+    }
+
+    // Reset input after sending
+    newMessage.value = '';
+    if (fileInput.value) fileInput.value.value = ''; // Clear file input
+    fileToUpload.value = null;
+
+  } catch (error) {
+    console.error('Errore nell\'invio del messaggio o del file:', error);
+  }
+};
   const fillTextArea = (prompt: string) => {
     newMessage.value = prompt;
   };
